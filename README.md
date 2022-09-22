@@ -6,7 +6,7 @@ The goal of this document is to walk through the end-to-end solution building pr
 * Set up an application load balancer with HTTPS
 
 ## 1. Running TabPy on EC2 Instance
-AWS EC2 instance is employed as a virtual server to host python and run TabPy. The most important point in this part is while we are not going to configure TabPy with HTTPS, it still should be configured with authentication. Below is the walk through process to set-up an EC2 instance and install and configure TabPy. If you already have EC2 instance with TabPy up and run you may skip this section. You can find the official AWS documentation on set up Amazon EC2 here . (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html)
+AWS EC2 instance is employed as a virtual server to host python and run TabPy. The most important point in this part is while we are not going to configure TabPy with HTTPS, it still should be configured with authentication. Below is the walk through process to set-up an EC2 instance and install and configure TabPy. If you already have EC2 instance with TabPy up and run you may skip this section. You can find the official AWS documentation on set up Amazon EC2 [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html).
 
 ## 1.1. EC2 Instance Set-up
 
@@ -32,7 +32,7 @@ In the last part you have the option to increase the storage or number of instan
 
 ## 1.2. Install Python and TabPy
 
-To install any software or package you need to connect to your EC2 instance. There are multiple ways to connect to your instance including ssh connection (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) (for mac) and putty (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html)(for windows) however the most straight forward method is using the AWS UI:
+To install any software or package you need to connect to your EC2 instance. There are multiple ways to connect to your instance including [ssh connection](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html) (for mac) and [putty](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html) (for windows) however the most straight forward method is using the AWS UI:
 
 
 After connecting to the EC2 you need to run the following commands.  
@@ -57,15 +57,15 @@ The next step is to set authentication for TabPy which is mandatory for Tableau 
 
 `TABPY_PWD_FILE = pass.txt`
 
-you can find more about TabPy configuration here (https://github.com/tableau/TabPy/blob/master/docs/server-config.md)
+you can find more about TabPy configuration [here](https://github.com/tableau/TabPy/blob/master/docs/server-config.md)
 
 the `pass.txt` file needs to be created and be available on the same server as TabPy server. The next step is add user(s) for TabPy with below command: 
 
 `tabpy-user add -u <username> -p <password> -f <pwdfile>`
 
- you can find more about TabPy authentication command here (https://github.com/tableau/TabPy/blob/master/docs/server-config.md#authentication)
+ you can find more about TabPy authentication command [here](https://github.com/tableau/TabPy/blob/master/docs/server-config.md#authentication)
 
-At this stage, If we run TabPy from the current terminal then TabPy will be attached to the current terminal. On the other word, as soon as you close your borrower/terminal then TabPy will be shut down. Hence, we need to make sure TabPy is running as a service on background. Depend on the OS of your EC2 instance there are multiple ways to run TabPy at background. For ubuntu one of the most useful application to create sessions at background is Tmux (https://github.com/tmux/tmux/wiki). Below is the summary of steps to run TabPy at background in ubuntu using Tmux. You can find more comprehensive reference for Tumx here (https://tmuxcheatsheet.com/). 
+At this stage, If we run TabPy from the current terminal then TabPy will be attached to the current terminal. On the other word, as soon as you close your borrower/terminal then TabPy will be shut down. Hence, we need to make sure TabPy is running as a service on background. Depend on the OS of your EC2 instance there are multiple ways to run TabPy at background. For ubuntu one of the most useful application to create sessions at background is [Tmux](https://github.com/tmux/tmux/wiki). Below is the summary of steps to run TabPy at background in ubuntu using Tmux. You can find more comprehensive reference for Tumx [here](https://tmuxcheatsheet.com/). 
 
 * Create a new session: `tmux new-session -s [session_name]`
 * Connect to the session: `tmux attach-session -t [session_name]`
@@ -78,7 +78,7 @@ Now TabPy is up and running on your EC2 instance and you are able to connect Tab
 # 2. Domain Name Registeration and SSL Certification
 
 Tableau Cloud establishes a connection only with external servers that are configured with a trusted 3rd party certificate authority (CA) and not with a self-signed certificate, a certificate from a private PKI, or a certificate that is not trusted by an established 3rd party CA. Hence, we need to have a valid TLS/SSL certificate from a trusted 3rd party certificate authority (CA) which required having a registered domain. 
-Request SSL TLS/SSL can be done with AWS certificate manager however requesting the certificate requires a registered domain. Below is the walk though process to registered a domain (if you do not have one) with AWS Route 53 and request a SSL certificate.You can find AWS official documentation about registering a new domain  here (https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html)and about requesting a public certificate here (https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html).
+Request SSL TLS/SSL can be done with AWS certificate manager however requesting the certificate requires a registered domain. Below is the walk though process to registered a domain (if you do not have one) with AWS Route 53 and request a SSL certificate.You can find AWS official documentation about registering a new domain  [here](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html) and about requesting a public certificate [here](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html).
 
 ## 2.1.Register a Domain
 
@@ -103,7 +103,7 @@ Few mins after creating record the status of certificate will turn into ‘issue
 
 # 3. Application Load Balancer
 
-Application load balancer is used to route the requests to the EC2 instance on which TabPy is running. Below is the walk though process to create an application load balancer and use it as proxy for the TabPy server. You can learn more application load balancer here (https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html).
+Application load balancer is used to route the requests to the EC2 instance on which TabPy is running. Below is the walk though process to create an application load balancer and use it as proxy for the TabPy server. You can learn more application load balancer [here](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html).
 
 ## 3.1. Create Load Balancer
 
@@ -119,7 +119,7 @@ the best practice is to create a new security group instead of using default one
 for the inbound and outbound rules make sure it is set to ‘HTTPS’ type with port range 443. The outbound type can be ‘All traffic’ 
 
 
-You can learn more about AWS application load balancer security group here (https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-update-security-groups.html).
+You can learn more about AWS application load balancer security group [here](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-update-security-groups.html).
 
 After creating the security group go back to the load balancer page and select the created security group;
 
